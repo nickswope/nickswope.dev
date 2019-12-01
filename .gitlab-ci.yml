@@ -1,0 +1,44 @@
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
+stages:
+  - test
+  - deploy
+
+auto deploy:
+  stage: deploy
+  only:
+    refs:
+      - master
+  environment:
+    name: production
+    url: https://nickswope.dev
+  before_script:
+    # setup files and permissions
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - chmod 600 $SSH_PRIVATE_KEY
+    - chmod 644 $SSH_KNOWN_HOSTS
+
+    # init ssh agent
+    - eval "$(ssh-agent -s)"
+    - ssh-add $SSH_PRIVATE_KEY
+    - cp $SSH_KNOWN_HOSTS ~/.ssh/known_hosts
+    
+  script:
+    # change public dir ownership to gitlab
+    - ssh gitlab@nickswope.dev "sudo chown -R gitlab:gitlab /srv/public"
+
+    # copy files
+    - scp -r public/* gitlab@nickswope.dev:/srv/public
+
+    # set nginx ownership and permissions
+    - ssh gitlab@nickswope.dev "sudo chown -R nginx:nginx /srv/public"
+    - ssh gitlab@nickswope.dev "sudo find /srv/public -type d -exec sudo chmod 755 {} \;"
+    - ssh gitlab@nickswope.dev "sudo find /srv/public -type f -exec sudo chmod 644 {} \;"
+
+manual deploy:
+  extends: auto deploy
+  when: manual
+  only: 
+    - merge_requests
