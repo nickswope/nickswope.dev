@@ -5,6 +5,10 @@ stages:
   - test
   - deploy
 
+code_quality:
+  artifacts:
+    paths: [gl-code-quality-report.json]
+
 auto deploy:
   stage: deploy
   only:
