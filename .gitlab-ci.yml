@@ -19,11 +19,11 @@ auto deploy:
     - chmod 700 ~/.ssh
     - chmod 600 $SSH_PRIVATE_KEY
     - chmod 644 $SSH_KNOWN_HOSTS
+    - cp $SSH_KNOWN_HOSTS ~/.ssh/known_hosts
 
     # init ssh agent
     - eval "$(ssh-agent -s)"
     - ssh-add $SSH_PRIVATE_KEY
-    - cp $SSH_KNOWN_HOSTS ~/.ssh/known_hosts
     
   script:
     # change public dir ownership to gitlab
