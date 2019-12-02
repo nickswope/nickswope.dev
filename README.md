@@ -1,7 +1,5 @@
 # [nickswope.dev][website] &#10170; [![pipeline status][pipeline-status-badge]][master-branch] [![Maintainability][cc-maintainability-badge]][cc-maintainability] [![Test Coverage][cc-coverage-badge]][cc-coverage]
 
-Source code for Nick Swope's personal website: [nickswope.dev][website]
-
 ## Repositories
 There are two repositories for this project: the [GitLab source repository][gitlab-repo] and the [GitHub mirror][github-repo]. The GitHub mirror is used for the [Code Climate dashboard][cc-dashboard] integration.
 
